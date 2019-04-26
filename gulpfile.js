@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
-    livereload = require('gulp-livereload');
+    livereload = require('gulp-livereload'),
+    zip = require('gulp-zip');
 
 // HTML Task
 gulp.task('html', function () {
@@ -51,6 +52,14 @@ gulp.task('img', function () {
             .pipe(livereload());
 });
 
+// Compress Task
+gulp.task('compress', function () {
+
+    return gulp.src('dist/**/*.*')
+            .pipe(zip('design.zip'))
+            .pipe(gulp.dest('.'))
+            .pipe(notify('Files Is Compressed'))
+});
 
 // Watch Task
 gulp.task('watch', function () {
@@ -60,6 +69,7 @@ gulp.task('watch', function () {
     gulp.watch('project/css/**/*.*', gulp.series('css'));
     gulp.watch('project/js/*.*', gulp.series('script'));
     gulp.watch('project/images/*', gulp.series('img'));
+    gulp.watch('dist/**/*.*', gulp.series('compress'));
 });
 
 // Defualt Task
